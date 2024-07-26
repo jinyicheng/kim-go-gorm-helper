@@ -15,7 +15,7 @@ type MysqlDatabase struct {
 	Name            string
 	Dsn             string
 	Env             string
-	GormConfig      *gorm.Config
+	GormConfig      gorm.Config
 	MaxIdleConns    *int
 	MaxOpenConns    *int
 	ConnMaxLifetime *time.Duration
@@ -32,7 +32,7 @@ func (m *Mysql) Get() map[string]MysqlDatabase {
 
 func (database MysqlDatabase) Db() (*gorm.DB, error) {
 	//根据配置创建数据库连接
-	if db, err := gorm.Open(mysql.Open(database.Dsn), database.GormConfig); err != nil {
+	if db, err := gorm.Open(mysql.Open(database.Dsn), &database.GormConfig); err != nil {
 		return db, err
 	} else {
 		if database.Env == "debug" {

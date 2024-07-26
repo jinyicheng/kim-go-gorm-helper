@@ -14,7 +14,7 @@ type SqlserverDatabase struct {
 	Name            string
 	Dsn             string
 	Env             string
-	GormConfig      *gorm.Config
+	GormConfig      gorm.Config
 	MaxIdleConns    *int
 	MaxOpenConns    *int
 	ConnMaxLifetime *time.Duration
@@ -31,7 +31,7 @@ func (m *Sqlserver) Get() map[string]SqlserverDatabase {
 
 func (database SqlserverDatabase) Db() (*gorm.DB, error) {
 	//根据配置创建数据库连接
-	if db, err := gorm.Open(sqlserver.Open(database.Dsn), database.GormConfig); err != nil {
+	if db, err := gorm.Open(sqlserver.Open(database.Dsn), &database.GormConfig); err != nil {
 		return db, err
 	} else {
 		if database.Env == "debug" {
