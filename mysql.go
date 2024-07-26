@@ -15,7 +15,6 @@ type MysqlDatabase struct {
 	Name            string
 	Dsn             string
 	Env             string
-	MysqlConfig     *mysql.Config
 	GormConfig      *gorm.Config
 	MaxIdleConns    *int
 	MaxOpenConns    *int
@@ -31,12 +30,8 @@ func (m *Mysql) Get() map[string]MysqlDatabase {
 	return databaseMap
 }
 
-func (database *MysqlDatabase) Db() (*gorm.DB, error) {
-	mysqlConfig := *database.MysqlConfig
-	if database.MysqlConfig != nil {
-		mysqlConfig.DSN = database.Dsn
-	}
-	if db, err := gorm.Open(mysql.New(mysqlConfig), database.GormConfig); err != nil {
+func (database MysqlDatabase) Db() (*gorm.DB, error) {
+	if db, err := gorm.Open(mysql.Open(database.Dsn), database.GormConfig); err != nil {
 		return db, err
 	} else {
 		if database.Env == "debug" {

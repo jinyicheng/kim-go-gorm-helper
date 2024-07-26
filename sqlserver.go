@@ -29,7 +29,7 @@ func (m *Sqlserver) Get() map[string]SqlserverDatabase {
 	return databaseMap
 }
 
-func (database *SqlserverDatabase) Db() (*gorm.DB, error) {
+func (database SqlserverDatabase) Db() (*gorm.DB, error) {
 	//连接MYSQL, 获得DB类型实例，用于后面的数据库读写操作。
 
 	if db, err := gorm.Open(sqlserver.Open(database.Dsn), database.GormConfig); err != nil {
