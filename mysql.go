@@ -32,6 +32,7 @@ func (m *Mysql) Get() map[string]MysqlDatabase {
 
 func (database MysqlDatabase) Db() (*gorm.DB, error) {
 	//根据配置创建数据库连接
+	//TODO:增加连接配置支持
 	if db, err := gorm.Open(mysql.Open(database.Dsn), &database.GormConfig); err != nil {
 		return db, err
 	} else {

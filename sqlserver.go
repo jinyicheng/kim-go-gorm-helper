@@ -23,7 +23,7 @@ type SqlserverDatabase struct {
 func (m *Sqlserver) Get() map[string]SqlserverDatabase {
 	databaseMap := make(map[string]SqlserverDatabase, len(m.Databases))
 	for _, database := range m.Databases {
-		//以配置中的名称作为索引方便配置引用
+		//以配置中的名称作为索引方便配置引用！
 		databaseMap[database.Name] = database
 	}
 	return databaseMap
@@ -31,6 +31,7 @@ func (m *Sqlserver) Get() map[string]SqlserverDatabase {
 
 func (database SqlserverDatabase) Db() (*gorm.DB, error) {
 	//根据配置创建数据库连接
+	//TODO:增加连接配置支持
 	if db, err := gorm.Open(sqlserver.Open(database.Dsn), &database.GormConfig); err != nil {
 		return db, err
 	} else {
