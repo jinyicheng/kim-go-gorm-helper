@@ -23,15 +23,14 @@ type SqlserverDatabase struct {
 func (m *Sqlserver) Get() map[string]SqlserverDatabase {
 	databaseMap := make(map[string]SqlserverDatabase, len(m.Databases))
 	for _, database := range m.Databases {
-		//连接MYSQL, 获得DB类型实例，用于后面的数据库读写操作。
+		//以配置中的名称作为索引方便配置引用
 		databaseMap[database.Name] = database
 	}
 	return databaseMap
 }
 
 func (database SqlserverDatabase) Db() (*gorm.DB, error) {
-	//连接MYSQL, 获得DB类型实例，用于后面的数据库读写操作。
-
+	//根据配置创建数据库连接
 	if db, err := gorm.Open(sqlserver.Open(database.Dsn), database.GormConfig); err != nil {
 		return db, err
 	} else {
